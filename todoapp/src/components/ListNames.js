@@ -1,22 +1,39 @@
 import React from 'react';
+//Bootstrap
+import { ReactComponent as ListIcon } from "bootstrap-icons/icons/list.svg";
 
 const navLinkStyle = { cursor: "pointer" };
 
-function List({ name, active }) {
-    const classes = `nav-link ${active ? 'active' : ''}`;
+function ListItem({ isSelected, name, count, onClick }) {
+    const textColor = isSelected ? "text-white" : "text-black";
     return (
-        <li className={classes} style={navLinkStyle}>
-            {name}
+        <li
+            className={`nav-link d-flex align-items-center ${isSelected ? "active" : ""}`}
+            style={navLinkStyle}
+            onClick={onClick}
+        >
+            <ListIcon /><span className={`${textColor} ms-2`}>{name}</span>
+            <small className={`${textColor} fw-lighter ms-auto`}>{count}</small>
         </li>
     )
 }
 
-export default function ListNames() {
+export default function ListNames({ lists, selectedListIdx, onListClick }) {
     return (
         <ul className='nav nav-pills flex-column mb-auto'>
-            <List name="Importante" />
-            <List name="Film da vedere" active={true} />
-            <List name="Libri da leggere" />
+            {lists.map((t, idx) => {
+                return (
+                    <ListItem
+                        key={t.id}
+                        isSelected={selectedListIdx === idx}
+                        name={t.name}
+                        count={t.undone_count}
+                        onClick={() => {
+                            onListClick(idx);
+                        }}
+                    />
+                );
+            })}
         </ul>
     );
 }
