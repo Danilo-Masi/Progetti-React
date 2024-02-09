@@ -48,8 +48,40 @@ export default function App() {
     }
     setAllTodos([...allTodos, newTodo]);
     setTodos([...todos, newTodo]);
+    addToListCount(listIdx, 1);
+  }
+
+  const handleUpdateTodo = (id, data) => {
+    //Prendiamo l'indice dell'attività tra tutte le attività
+    const todoIdx = allTodos.findIndex((t) => t.id === id);
+    //Prendiamo l'attività che ha quell'indice
+    const preTodo = allTodos[todoIdx];
+    //Creiamo un nuovo oggetto
+    const updateTodo = {
+      ...preTodo,
+      ...data,
+    };
+    //Viene creata una copia dell'array "allTodos"
+    const tmpTodos = [...allTodos];
+    //Viene sostiuita l'attività vecchia con l'attività aggiornata all'interno
+    //dell'array temporaneo "tmpTodos"
+    tmpTodos[todoIdx] = updateTodo;
+    //Viene aggiornato lo stato con il nuovo array temporaneo
+    setAllTodos(tmpTodos);
+    //Viene aggiornato lo stato con un array filtrato contente solo le attività che
+    //appartengono alla stessa lista dell'attività aggiornata
+    setTodos(tmpTodos.filter((t) => t.listId === updateTodo.listId));
+    //Viene verificato se lo stato dell'attività è cambiato 
+    const isTodoStatusChanged = preTodo.done !== updateTodo.done;
+    if (isTodoStatusChanged) {
+      addToListCount(listIdx, preTodo.done ? 1 : -1);
+    }
+  }
+
+  const addToListCount = (listIdx, num) => {
     const tmpLists = [...allLists];
-    tmpLists[listIdx].undone_count++;
+    tmpLists[listIdx] = { ...tmpLists[listIdx] };
+    tmpLists[listIdx].undone_count += num;
     setAllLists(tmpLists);
   }
 
@@ -65,7 +97,7 @@ export default function App() {
           <NoListView />
         ) : (
           <>
-            <TodoList todos={todos} />
+            <TodoList todos={todos} onTodoUpdate={handleUpdateTodo} />
             <TodoCreator onCreate={handleCreateTodo} />
           </>
         )}
