@@ -5,9 +5,8 @@ import { v4 as uuid } from "uuid";
 import Layout, { LeftCol, RightCol } from './components/Layout';
 import User from './components/User';
 import ListNames from './components/ListNames';
-import TodoList from './components/TodoList';
-import TodoCreator from './components/TodoCreator';
 import NoListView from './components/NoListView';
+import ListView from './components/ListView';
 
 const user = {
   id: 1,
@@ -85,6 +84,15 @@ export default function App() {
     setAllLists(tmpLists);
   }
 
+  const handleDeleteTodo = (id) => {
+    const todoIdx = todos.findIndex((t) => t.id === id);
+    const todo = todos[todoIdx];
+    const tmpTodos = [...todos];
+    tmpTodos.splice(todoIdx, 1);
+    setTodos(tmpTodos);
+    addToListCount(listIdx, todo.done ? 0 : -1);
+  }
+
   return (
     <Layout >
       <LeftCol>
@@ -96,10 +104,12 @@ export default function App() {
         {listIdx === -1 ? (
           <NoListView />
         ) : (
-          <>
-            <TodoList todos={todos} onTodoUpdate={handleUpdateTodo} />
-            <TodoCreator onCreate={handleCreateTodo} />
-          </>
+          <ListView
+            todos={todos}
+            onTodoCreate={handleCreateTodo}
+            onTodoDelete={handleDeleteTodo}
+            onTodoUpdate={handleUpdateTodo}
+          />
         )}
       </RightCol>
     </Layout>

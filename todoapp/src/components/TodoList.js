@@ -2,7 +2,7 @@ import React from 'react';
 //Components
 import TodoItem from './TodoItem';
 
-export default function TodoList({ todos, onTodoUpdate }) {
+export default function TodoList({ todos, onTodoUpdate, onTodoDelete }) {
     //Costante esterna che fa la map sui dati dell'archivio mock
     const todoItems = todos.map((t) => (
         <TodoItem
@@ -11,6 +11,7 @@ export default function TodoList({ todos, onTodoUpdate }) {
             done={t.done}
             text={t.text}
             updateTodo={onTodoUpdate}
+            deleteTodo={onTodoDelete}
         />
     ));
     return (
