@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const defaultImage = "htpps://placeholder.com/32x32.png";
+const defaultImage = "https://placeholder.com/32x32.png";
 
 function getImageOrDefaultURL(imageUrl) {
     try {
@@ -11,7 +12,7 @@ function getImageOrDefaultURL(imageUrl) {
     }
 }
 
-export default function User({ name, image, children }) {
+function User({ name, image, children }) {
     return (
         <div className='d-flex align-items-center text-black text-decoration-none py-1'>
             <img
@@ -28,3 +29,11 @@ export default function User({ name, image, children }) {
         </div>
     )
 }
+
+User.propTypes = {
+    name: PropTypes.string,
+    image: PropTypes.string,
+    children: PropTypes.node,
+};
+
+export default User;

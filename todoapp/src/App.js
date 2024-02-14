@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-//UUID
-import { v4 as uuid } from "uuid";
 //Components
 import Layout, { LeftCol, RightCol } from './components/Layout';
 import User from './components/User';
@@ -31,12 +29,11 @@ const initialTodos = [
   { listId: 2, id: 2, done: true, text: "Seconda attività" },
   { listId: 2, id: 3, done: false, text: "Terza attività" },
 ]
-
 FINE DATA MOCKUP ***/
 
 export default function App() {
 
-  /******* INIZIO COMMENTO
+  /******* INIZIO FUNZIONI SENZA API
      
     const [allLists, setAllLists] = useState(initialLists);
     const [allTodos, setAllTodos] = useState(initialTodos);
@@ -125,7 +122,7 @@ export default function App() {
     setAllLists(tmpLists);
   }
   
-  FINE COMMENTO ******/
+  FINE FUNZIONI SENZA API ******/
 
   const [user, setUser] = useState({});
   const [lists, setLists] = useState([]);

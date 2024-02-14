@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ReactModal from 'react-modal';
+import PropTypes from 'prop-types';
 //Componenti
 import TodoList from './TodoList';
 import TodoCreator from './TodoCreator';
@@ -7,7 +8,7 @@ import DeleteButton from './DeleteButton';
 import ListDeleteModal from './ListDeleteModal';
 import EditableText from './EditableText';
 
-export default function ListView({ list, todos, onTodoUpdate, onTodoDelete, onTodoCreate, onListDelete, onListNameUpdate }) {
+function ListView({ list, todos, onTodoUpdate, onTodoDelete, onTodoCreate, onListDelete, onListNameUpdate }) {
 
     const notCompleted = todos.filter((t) => !t.done);
     const completed = todos.filter((t) => t.done);
@@ -54,3 +55,20 @@ export default function ListView({ list, todos, onTodoUpdate, onTodoDelete, onTo
         </>
     )
 }
+
+ListView.propTypes = {
+    list: PropTypes.shape({
+        name: PropTypes.string,
+        id: PropTypes.string,
+    }),
+    todos: PropTypes.arrayOf(
+        PropTypes.shape({
+            done: PropTypes.bool,
+            id: PropTypes.string,
+            text: PropTypes.string,
+        }),
+    ),
+    onTodoUpdate: PropTypes.func,
+}
+
+export default ListView;
