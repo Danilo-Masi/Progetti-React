@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 const defaultImage = "https://placeholder.com/32x32.png";
 
+//Funzione che restituisce l'immagine o l'immagine di default
 function getImageOrDefaultURL(imageUrl) {
     try {
         new URL(imageUrl);

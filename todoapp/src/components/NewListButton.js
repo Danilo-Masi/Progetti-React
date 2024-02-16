@@ -12,7 +12,6 @@ export default function NewListButton({ onCreateList }) {
             <small
                 className='d-flex align-item-center'
             >
-                
                 <PlusIcon />
             </small>
         </button>

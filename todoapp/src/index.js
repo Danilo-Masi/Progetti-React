@@ -10,7 +10,8 @@ import "./style.css";
 
 const rootId = "root";
 
-ReactModal.setAppElement(`#${rootId}`);
+//Proprietà per cambiare lo stile del Modal
+//ReactModal.setAppElement(`#${rootId}`);
 //ReactModal.defaultStyles.content.background = "none";
 //ReactModal.defaultStyles.content.border = "none";
 

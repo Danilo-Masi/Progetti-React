@@ -1,9 +1,9 @@
 import React from 'react';
-//Components
+//Componenti
 import TodoItem from './TodoItem';
 
 export default function TodoList({ todos, onTodoUpdate, onTodoDelete }) {
-    //Costante esterna che fa la map sui dati dell'archivio mock
+    //Fa la mappa sulla lista delle attività in modo tala da rendere il codice piu semplice da leggere
     const todoItems = todos.map((t) => (
         <TodoItem
             key={t.id}

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-//Components
+import ReactModal from 'react-modal';
+//Componenti
 import Layout, { LeftCol, RightCol } from './components/Layout';
 import User from './components/User';
 import ListNames from './components/ListNames';
 import NoListView from './components/NoListView';
 import ListView from './components/ListView';
 import NewListButton from './components/NewListButton';
+import ErrorModal from './components/ErrorModal';
 //Utils
 import { postData, patchData, getData, deleteData } from './utils';
-import ReactModal from 'react-modal';
-import ErrorModal from './components/ErrorModal';
 
 /**** INZIO DATA MOCKUP
 const user = {
@@ -191,7 +191,7 @@ export default function App() {
       .catch(() => setError(`Errore durante la creazione dell'attività`));
   };
 
-  //Funzione (richiamata in un altra funzione) per aggiornare il numero di ToDo da completare
+  //Funzione (richiamata in altre funzioni) per aggiornare il numero di ToDo da completare
   const addToListCount = (listIdx, num) => {
     const tmpLists = [...lists];
     tmpLists[listIdx] = { ...tmpLists[listIdx] };
