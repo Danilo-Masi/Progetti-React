@@ -1,51 +1,49 @@
 import React from 'react';
 
-function Container({ fluid, children, className }) {
-    const containerClass = `container${fluid ? "-fluid" : ""} ${className ? className : ''}`;
-    return <div className={containerClass}>{children}</div>;
-}
-
-function Row({ children, className }) {
-    const rowClass = `flex ${className ? className : ''}`;
-    return <div className={rowClass}>{children}</div>;
+function Container({ children }) {
+    return (
+        <div className='flex flex-row h-screen bg-slate-700'>
+            {children}
+        </div>
+    );
 }
 
 export default function Layout({ children }) {
     return (
-        <Container fluid={true}>
-            <Row>{children}</Row>
+        <Container>
+            {children}
         </Container>
-    )
+    );
 }
 
-function Col({ children, size, className = " ", style }) {
-    const colClass = `flex-${size} w-32 ${className}`;
+function Col({ children, size }) {
     return (
-        <div className={colClass} style={style}>
+        <div className={`w-${size}`}>
             {children}
         </div>
-    )
+    );
 }
 
 export function LeftCol({ children }) {
     return (
-        <Col
-            size="3"
-            className='bg-gray-200 p-3 overflow-y-auto h-screen'
-            style={{
-                boxShadow: "-1px 0 0 rgba(0,0,0,0.1)",
-            }}>
+        <Col size="1/4">
             {children}
         </Col>
-    )
+    );
 }
 
-export function RightCol({ children }) {
+export function RigthCol({ children }) {
     return (
-        <Col
-            size="9"
-            className='p-3 overflow-y-auto h-screen'>
+        <Col size="3/4">
             {children}
         </Col>
-    )
+    );
+}
+
+export function Row ({children, heigth}) {
+    return (
+        <div className={`w-full h-${heigth} flex items-center justify-center bg-teal-700`}>
+            {children}
+        </div>
+    );
 }
