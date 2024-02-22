@@ -2,7 +2,7 @@ import React from 'react';
 
 function Container({ children }) {
     return (
-        <div className='flex flex-row h-screen bg-slate-700'>
+        <div className='flex flex-row w-full h-svh'>
             {children}
         </div>
     );
@@ -16,9 +16,11 @@ export default function Layout({ children }) {
     );
 }
 
-function Col({ children, size }) {
+export function Col({ children, size, color, gap, margin, overflow, padding }) {
     return (
-        <div className={`w-${size}`}>
+        <div
+            className={`${size} ${color} h-full flex flex-col ${gap ? gap : ""} 
+            ${margin ? margin : ""} ${overflow ? overflow : ""} ${padding ? padding : ""}`}>
             {children}
         </div>
     );
@@ -26,7 +28,7 @@ function Col({ children, size }) {
 
 export function LeftCol({ children }) {
     return (
-        <Col size="1/4">
+        <Col size="w-1/4" color="bg-slate-200">
             {children}
         </Col>
     );
@@ -34,15 +36,15 @@ export function LeftCol({ children }) {
 
 export function RigthCol({ children }) {
     return (
-        <Col size="3/4">
+        <Col size="w-3/4">
             {children}
         </Col>
     );
 }
 
-export function Row ({children, heigth}) {
+export function Row({ children, height }) {
     return (
-        <div className={`w-full h-${heigth} flex items-center justify-center bg-teal-700`}>
+        <div className={`w-full ${height} flex items-center justify-center`}>
             {children}
         </div>
     );

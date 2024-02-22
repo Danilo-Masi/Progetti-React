@@ -4,8 +4,8 @@ import { Row } from './Layout';
 
 export default function Logo() {
   return (
-    <Row heigth="1/5">
-        <h1 className='italic'>Logo</h1>
+    <Row height="h-1/6">
+        <h1 className='italic font-sans text-3xl'>Nasdaq React</h1>
     </Row>
   )
 }
