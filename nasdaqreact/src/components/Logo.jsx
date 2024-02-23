@@ -1,11 +1,13 @@
 import React from 'react';
 //Componenti
-import { Row } from './Layout';
+import { ColLayout } from './Layout';
 
 export default function Logo() {
-  return (
-    <Row height="h-1/6">
-        <h1 className='italic font-sans text-3xl'>Nasdaq React</h1>
-    </Row>
-  )
+    return (
+        <ColLayout
+            height="h-1/6"
+            justify="justify-center">
+            <h1 className='text-3xl italic md:text-4xl'>NasdaqReact</h1>
+        </ColLayout>
+    )
 }

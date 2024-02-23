@@ -1,51 +1,28 @@
 import React from 'react';
 
-function Container({ children }) {
-    return (
-        <div className='flex flex-row w-full h-svh'>
-            {children}
-        </div>
-    );
-}
-
 export default function Layout({ children }) {
     return (
-        <Container>
+        <div className='w-screen min-h-svh flex flex-col md:flex-row bg-gray-100'>
             {children}
-        </Container>
+        </div>
     );
 }
 
-export function Col({ children, size, color, gap, margin, overflow, padding }) {
+export function Col({ children, width, mdWidth, color }) {
+    return (
+        <div className={`${width} ${mdWidth} h-svh ${color} flex flex-col items-center justify-start p-5`}>
+            {children}
+        </div>
+    );
+}
+
+// Layout.js
+export function ColLayout({ children, height, color, justify, gap, overflow }) {
     return (
         <div
-            className={`${size} ${color} h-full flex flex-col ${gap ? gap : ""} 
-            ${margin ? margin : ""} ${overflow ? overflow : ""} ${padding ? padding : ""}`}>
+            className={`w-full flex flex-col items-center ${height} ${justify} ${gap} ${overflow} ${color}`}>
             {children}
         </div>
     );
 }
 
-export function LeftCol({ children }) {
-    return (
-        <Col size="w-1/4" color="bg-slate-200">
-            {children}
-        </Col>
-    );
-}
-
-export function RigthCol({ children }) {
-    return (
-        <Col size="w-3/4">
-            {children}
-        </Col>
-    );
-}
-
-export function Row({ children, height }) {
-    return (
-        <div className={`w-full ${height} flex items-center justify-center`}>
-            {children}
-        </div>
-    );
-}
