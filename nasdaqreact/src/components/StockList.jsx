@@ -1,14 +1,9 @@
 import React from 'react';
-import { ColLayout } from './Layout';
 
-export default function StockList({ children, altezza }) {
+export default function StockList({ children }) {
     return (
-        <ColLayout
-            height={altezza}
-            gap="gap-3"
-            justify="justify-start"
-            overflow="overflow-auto">
+        <div className='w-full h-4/6 flex flex-col gap-3 overflow-scroll'>
             {children}
-        </ColLayout>
-    )
+        </div>
+    );
 }

@@ -10,17 +10,17 @@ export default function Layout({ children }) {
 
 export function Col({ children, width, mdWidth, color }) {
     return (
-        <div className={`${width} ${mdWidth} h-svh ${color} flex flex-col items-center justify-start p-5`}>
+        <div className={`${width} ${mdWidth} h-svh ${color} flex flex-col items-centers justify-start p-5`}>
             {children}
         </div>
     );
 }
 
 // Layout.js
-export function ColLayout({ children, height, color, justify, gap, overflow }) {
+export function ColLayout({ children, height, color, justify, gap, overflow, flexDirection, itemPosition }) {
     return (
         <div
-            className={`w-full flex flex-col items-center ${height} ${justify} ${gap} ${overflow} ${color}`}>
+            className={`w-full flex flex-wrap ${itemPosition ? itemPosition : 'items-center'} flex-col md:${flexDirection} ${height} ${justify} ${gap} ${overflow} ${color}`}>
             {children}
         </div>
     );

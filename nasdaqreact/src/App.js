@@ -6,54 +6,75 @@ import SearchBar from './components/SearchBar';
 import StockList from './components/StockList';
 import Stock from './components/Stock';
 import EmptyView from './components/EmptyView';
+import StockDetail from './components/StockDetail';
+import StockDetailList from './components/StockDetailList';
 
-const stockMock = [
-  { id: 1, nome: 'Apple', simbolo: 'APPL' },
-  { id: 2, nome: 'Amazon', simbolo: 'AMZ' },
-  { id: 3, nome: 'Meta', simbolo: 'MT' },
+const stockListMock = [
+  { id: 1, nome: 'Apple', simbolo: 'APPL', valore: 142000.14, percentuale: 15.68, checked: false },
+  { id: 2, nome: 'Amazon', simbolo: 'AMZ', valore: 34876.22, percentuale: 2.33, checked: false },
+  { id: 3, nome: 'Meta', simbolo: 'MT', valore: 786.04, percentuale: 26.01, checked: true },
+  { id: 4, nome: 'Netflix', simbolo: 'NFX', valore: 1010.11, percentuale: 3.22, checked: false },
 ];
 
-//Funzione per renderizzare i componenti Stock
-function renderStocks() {
+//Funzione per renderizzare i componenti della lista stockDetailListMock
+function renderStocksDetail(stocksDetailList) {
   return (
-    stockMock.map((s) => {
-      return (
-        <Stock
-          key={s.id}
-          nome={s.nome}
-          simbolo={s.simbolo}
-          id={s.id} />
-      )
-    })
+    stocksDetailList.map((sd) => (
+      <StockDetail
+        key={sd.id}
+        nome={sd.nome}
+        valore={sd.valore}
+        percentuale={sd.percentuale}
+        checked={sd.checked}
+      />
+    ))
   );
 }
 
 export default function App() {
 
-  const [stockDetailList, setStockDetailList] = useState([]);
+  const [stockList, setStockList] = useState(stockListMock);
+  const [stocksDetailList, setStocksDetailList] = useState([]);
+
+  const handleSaveStock = (id) => {
+    const stockSalvata = stockList.find((s) => s.id === id);
+    const verifica = stocksDetailList.find((s) => s.id === stockSalvata.id);
+    if (verifica) {
+      alert('La stock selezionata è già stata salvata')
+    } else {
+      setStocksDetailList(prevList => [...prevList, stockSalvata]);
+      alert(`Stock con id: ${id} salvata`);
+    }
+  }
 
   return (
     <Layout >
       {/* Barra di navigazione */}
-      <Col width="w-screen" mdWidth="md:w-1/4" height="h-auto" color="bg-gray-200">
+      <Col width="w-screen" mdWidth="md:w-1/4" height="h-auto" color="bg-gray-300">
         <Logo />
         <SearchBar />
-        {stockMock.length === 0 ? (
-          <EmptyView height="h-3/4" />
+        {stockList.length === 0 ? (
+          <EmptyView height="h-3/4" testo="Fai la tua ricerca" />
         ) : (
-          <StockList altezza="h-3/4">
-            {renderStocks()}
+          <StockList>
+            {stockList.map((s) => (
+              <Stock
+                onSaveStocks={() => handleSaveStock(s.id)}
+                key={s.id}
+                nome={s.nome}
+                simbolo={s.simbolo} />
+            ))}
           </StockList >
         )}
       </Col>
       {/* Main content */}
       <Col width="w-screen" mdWidth="md:w-3/4" height="h-auto">
-        {stockDetailList.length === 0 ? (
-          <EmptyView height="h-full" />
+        {stocksDetailList.length === 0 ? (
+          <EmptyView height="h-full" testo="Aggiungi una stock" />
         ) : (
-          <StockList altezza="h-full">
-            ciao
-          </StockList>
+          <StockDetailList >
+            {renderStocksDetail(stocksDetailList)}
+          </StockDetailList>
         )}
       </Col>
     </Layout >
