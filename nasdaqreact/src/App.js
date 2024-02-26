@@ -8,6 +8,7 @@ import Stock from './components/Stock';
 import EmptyView from './components/EmptyView';
 import StockDetail from './components/StockDetail';
 import StockDetailList from './components/StockDetailList';
+import Chart from './components/Chart';
 
 const stockListMock = [
   { id: 1, nome: 'Apple', simbolo: 'APPL', valore: 142000.14, percentuale: 15.68, checked: false },
@@ -16,26 +17,22 @@ const stockListMock = [
   { id: 4, nome: 'Netflix', simbolo: 'NFX', valore: 1010.11, percentuale: 3.22, checked: false },
 ];
 
-//Funzione per renderizzare i componenti della lista stockDetailListMock
-function renderStocksDetail(stocksDetailList) {
-  return (
-    stocksDetailList.map((sd) => (
-      <StockDetail
-        key={sd.id}
-        nome={sd.nome}
-        valore={sd.valore}
-        percentuale={sd.percentuale}
-        checked={sd.checked}
-      />
-    ))
-  );
-}
-
 export default function App() {
 
-  const [stockList, setStockList] = useState(stockListMock);
+  const [stockList, setStockList] = useState([]);
   const [stocksDetailList, setStocksDetailList] = useState([]);
 
+  //Funzione per ricercare le stock per nome
+  const handleSearchStocks = (searchString) => {
+    const searchTerm = searchString.toLowerCase();
+    const listaFiltrata = stockListMock.filter(stock => {
+      const stockName = stock.nome.toLowerCase();
+      return stockName.includes(searchTerm);
+    });
+    setStockList(listaFiltrata);
+  }
+
+  //Funzione per salvare una stock
   const handleSaveStock = (id) => {
     const stockSalvata = stockList.find((s) => s.id === id);
     const verifica = stocksDetailList.find((s) => s.id === stockSalvata.id);
@@ -50,9 +47,9 @@ export default function App() {
   return (
     <Layout >
       {/* Barra di navigazione */}
-      <Col width="w-screen" mdWidth="md:w-1/4" height="h-auto" color="bg-gray-300">
+      <Col width="w-screen" mdWidth="md:w-1/4" height="h-auto" color="bg-gray-200">
         <Logo />
-        <SearchBar />
+        <SearchBar onSearchStocks={(searchString) => handleSearchStocks(searchString)} />
         {stockList.length === 0 ? (
           <EmptyView height="h-3/4" testo="Fai la tua ricerca" />
         ) : (
@@ -73,8 +70,16 @@ export default function App() {
           <EmptyView height="h-full" testo="Aggiungi una stock" />
         ) : (
           <StockDetailList >
-            {renderStocksDetail(stocksDetailList)}
-          </StockDetailList>
+            {stocksDetailList.map((sd) => (
+              <StockDetail
+                key={sd.id}
+                nome={sd.nome}
+                valore={sd.valore}
+                percentuale={sd.percentuale}
+                checked={sd.checked}
+              />
+            ))}
+          </StockDetailList>    
         )}
       </Col>
     </Layout >

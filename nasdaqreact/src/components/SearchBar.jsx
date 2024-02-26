@@ -2,23 +2,23 @@ import React, { useState } from 'react';
 //Componenti
 import { ColLayout } from './Layout';
 
-//Funzione che prende il valore digitato dall'utente
-/****** DA IMPLEMENTARE ********/ 
-const handleSearch = (digit) => {
-    if(digit !== '') {
-        alert(digit);
-    }
-}
-
-export default function SearchBar() {
+export default function SearchBar({ onSearchStocks }) {
 
     const [digit, setDigit] = useState("");
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (digit !== '') {
+            onSearchStocks(digit)
+        }
+        setDigit("");
+    }
 
     return (
         <ColLayout
             height="h-1/6"
-           justify="justify-center">
-            <form className="w-full">
+            justify="justify-center">
+            <form className="w-full" onSubmit={handleSearch}>
                 <label
                     htmlFor="default-search"
                     className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
@@ -41,7 +41,7 @@ export default function SearchBar() {
                     <button
                         type="submit"
                         className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        onClick={() => handleSearch(digit)}>
+                        onClick={handleSearch}>
                         Search
                     </button>
                 </div>
