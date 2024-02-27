@@ -16,15 +16,22 @@ function SaveButton({ onClick, salvato }) {
     );
 }
 
-export default function Stock({ nome, simbolo, onSaveStocks, salvato }) {
+export default function Stock({ nome, simbolo, valore, percentuale, onSaveStocks, salvato }) {
 
+    const divClass = "flex items-center gap-2";
     const valueText = "text-md";
-    const labelText = "text-sm text-gray-700";
 
     return (
-        <div className='w-full flex justify-between p-3 text-md text-gray-900 border border-gray-300 rounded-lg bg-gray-50'>
-            <p className={valueText}>{nome} - <span className={labelText}>{simbolo}</span></p>
-            <SaveButton onClick={onSaveStocks} salvato={salvato}/>
+        <div className='w-full flex item-center justify-between p-3 text-md text-gray-900 border border-gray-300 rounded-lg bg-gray-50'>
+            <div className={divClass}>
+                <SaveButton onClick={onSaveStocks} salvato={salvato} />
+                <div  className='w-10 h-10 bg-red-400 rounded-full'/>
+                <p className={valueText}>{nome} <br /> <span className="text-xs text-gray-700">{simbolo}</span></p>
+            </div>
+
+            <div className={divClass}>
+                <p className={valueText}>$ {valore} <br /> <span className="text-xs text-gray-700 float-right">{percentuale}%</span></p>
+            </div>
         </div>
     )
 }

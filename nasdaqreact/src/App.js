@@ -8,21 +8,18 @@ import Stock from './components/Stock';
 import EmptyView from './components/EmptyView';
 import StockDetail from './components/StockDetail';
 import StockDetailList from './components/StockDetailList';
-import Chart from './components/Chart';
+import { getStockSearch } from './services/AlphaVantageApi';
 
+/**** Lista mock *** TEST ***
 const stockListMock = [
   { id: 1, nome: 'Apple', simbolo: 'APPL', valore: 142000.14, percentuale: 15.68, checked: false },
   { id: 2, nome: 'Amazon', simbolo: 'AMZ', valore: 34876.22, percentuale: 2.33, checked: false },
   { id: 3, nome: 'Meta', simbolo: 'MT', valore: 786.04, percentuale: 26.01, checked: true },
   { id: 4, nome: 'Netflix', simbolo: 'NFX', valore: 1010.11, percentuale: 3.22, checked: false },
 ];
+****/
 
-export default function App() {
-
-  const [stockList, setStockList] = useState([]);
-  const [stocksDetailList, setStocksDetailList] = useState([]);
-
-  //Funzione per ricercare le stock per nome
+/***** Funzione di ricerca *** TEST ***
   const handleSearchStocks = (searchString) => {
     const searchTerm = searchString.toLowerCase();
     const listaFiltrata = stockListMock.filter(stock => {
@@ -30,6 +27,22 @@ export default function App() {
       return stockName.includes(searchTerm);
     });
     setStockList(listaFiltrata);
+  }
+*****/
+
+export default function App() {
+
+  const [stockList, setStockList] = useState([]);
+  const [stocksDetailList, setStocksDetailList] = useState([]);
+
+  //Funzione per la ricerca di stock con chiamata all'API
+  const handleSearchStocks = async (searchString) => {
+    try {
+      const data = await getStockSearch({ searchString });
+      setStockList(data || []);
+    } catch (error) {
+      console.error("Errore nella ricerca delle stock");
+    }
   }
 
   //Funzione per salvare una stock
@@ -54,12 +67,14 @@ export default function App() {
           <EmptyView height="h-3/4" testo="Fai la tua ricerca" />
         ) : (
           <StockList>
-            {stockList.map((s) => (
+            {stockList.map((s, key) => (
               <Stock
                 onSaveStocks={() => handleSaveStock(s.id)}
-                key={s.id}
-                nome={s.nome}
-                simbolo={s.simbolo} />
+                key={key}
+                nome={s.name}
+                simbolo={s.symbol}
+                valore={s.valore}
+                percentuale={s.percentuale} />
             ))}
           </StockList >
         )}
@@ -74,12 +89,11 @@ export default function App() {
               <StockDetail
                 key={sd.id}
                 nome={sd.nome}
+                simbolo={sd.simbolo}
                 valore={sd.valore}
-                percentuale={sd.percentuale}
-                checked={sd.checked}
-              />
+                percentuale={sd.percentuale} />
             ))}
-          </StockDetailList>    
+          </StockDetailList>
         )}
       </Col>
     </Layout >
