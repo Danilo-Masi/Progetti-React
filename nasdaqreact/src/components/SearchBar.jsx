@@ -6,6 +6,7 @@ export default function SearchBar({ onSearchStocks }) {
 
     const [digit, setDigit] = useState("");
 
+    //Funzione (callBack) per prendere il valore inserito dall'utente
     const handleSearch = (e) => {
         e.preventDefault();
         if (digit !== '') {

@@ -8,47 +8,34 @@ import Stock from './components/Stock';
 import EmptyView from './components/EmptyView';
 import StockDetail from './components/StockDetail';
 import StockDetailList from './components/StockDetailList';
-import { getStockSearch } from './services/AlphaVantageApi';
-
-/**** Lista mock *** TEST ***
-const stockListMock = [
-  { id: 1, nome: 'Apple', simbolo: 'APPL', valore: 142000.14, percentuale: 15.68, checked: false },
-  { id: 2, nome: 'Amazon', simbolo: 'AMZ', valore: 34876.22, percentuale: 2.33, checked: false },
-  { id: 3, nome: 'Meta', simbolo: 'MT', valore: 786.04, percentuale: 26.01, checked: true },
-  { id: 4, nome: 'Netflix', simbolo: 'NFX', valore: 1010.11, percentuale: 3.22, checked: false },
-];
-****/
-
-/***** Funzione di ricerca *** TEST ***
-  const handleSearchStocks = (searchString) => {
-    const searchTerm = searchString.toLowerCase();
-    const listaFiltrata = stockListMock.filter(stock => {
-      const stockName = stock.nome.toLowerCase();
-      return stockName.includes(searchTerm);
-    });
-    setStockList(listaFiltrata);
-  }
-*****/
+import Skeleton from './components/Skeleton';
+//Services
+import { getStockSearch } from './services/StockAPI';
 
 export default function App() {
 
   const [stockList, setStockList] = useState([]);
   const [stocksDetailList, setStocksDetailList] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  //Funzione per la ricerca di stock con chiamata all'API
+  //Funzione per ricercare la stock in base ad all'input inserito dall'utente
   const handleSearchStocks = async (searchString) => {
     try {
+      setLoading(true);
       const data = await getStockSearch({ searchString });
       setStockList(data || []);
     } catch (error) {
       console.error("Errore nella ricerca delle stock");
+      setLoading(false);
+    } finally {
+      setLoading(false);
     }
   }
 
-  //Funzione per salvare una stock
+  //Funzione per salvare una stock nella lista "stockDetailList"
   const handleSaveStock = (id) => {
-    const stockSalvata = stockList.find((s) => s.id === id);
-    const verifica = stocksDetailList.find((s) => s.id === stockSalvata.id);
+    const stockSalvata = stockList.find((s) => s.uuid === id);
+    const verifica = stocksDetailList.find((s) => s.uuid === stockSalvata.uuid);
     if (verifica) {
       alert('La stock selezionata è già stata salvata')
     } else {
@@ -57,23 +44,32 @@ export default function App() {
     }
   }
 
+  //Funzione per rimuovere una stock dalla lista "stockDetailList"
+  // ************** FUNZIONE DA IMPLEMENTARE ****************** //
+  const handleUnsaveStock = (uuid) => {
+    alert(`Elimina stock salvata con id: ${uuid}`);
+  }
+
   return (
     <Layout >
       {/* Barra di navigazione */}
       <Col width="w-screen" mdWidth="md:w-1/4" height="h-auto" color="bg-gray-200">
         <Logo />
         <SearchBar onSearchStocks={(searchString) => handleSearchStocks(searchString)} />
-        {stockList.length === 0 ? (
+        {loading ? (
+          <Skeleton />
+        ) : stockList.length === 0 ? (
           <EmptyView height="h-3/4" testo="Fai la tua ricerca" />
         ) : (
           <StockList>
-            {stockList.map((s, key) => (
+            {stockList.map((s) => (
               <Stock
-                onSaveStocks={() => handleSaveStock(s.id)}
-                key={key}
-                nome={s.name}
+                onSaveStocks={() => handleSaveStock(s.uuid)}
+                key={s.uuid}
+                nome={s.symbol}
                 simbolo={s.symbol}
-                valore={s.valore}
+                valore={s.price}
+                immagine={s.iconUrl}
                 percentuale={s.percentuale} />
             ))}
           </StockList >
@@ -87,10 +83,13 @@ export default function App() {
           <StockDetailList >
             {stocksDetailList.map((sd) => (
               <StockDetail
-                key={sd.id}
-                nome={sd.nome}
-                simbolo={sd.simbolo}
-                valore={sd.valore}
+                onUnsaveStok={() => handleUnsaveStock(sd.uuid)}
+                key={sd.uuid}
+                uuid={sd.uuid}
+                nome={sd.symbol}
+                simbolo={sd.symbol}
+                valore={sd.price}
+                immagine={sd.iconUrl}
                 percentuale={sd.percentuale} />
             ))}
           </StockDetailList>

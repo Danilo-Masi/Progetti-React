@@ -1,5 +1,8 @@
 import React from 'react';
+//Componenti
+import StockIcon from './StockIcon';
 
+//Funzione che restituisce il bottone per salvare una stock nella lista
 function SaveButton({ onClick, salvato }) {
     return (
         <button onClick={onClick}>
@@ -16,21 +19,41 @@ function SaveButton({ onClick, salvato }) {
     );
 }
 
-export default function Stock({ nome, simbolo, valore, percentuale, onSaveStocks, salvato }) {
+export default function Stock({ nome, simbolo, valore, percentuale, immagine, onSaveStocks, salvato }) {
 
+    //Testo trocato
+    const nomeStock = nome.length > 10 ? nome.substring(0, 10).toLowerCase() : nome;
+    const valoreStock = valore.length > 10 ? valore.substring(0, 10) : valore;
+
+    //Stile
     const divClass = "flex items-center gap-2";
     const valueText = "text-md";
 
     return (
         <div className='w-full flex item-center justify-between p-3 text-md text-gray-900 border border-gray-300 rounded-lg bg-gray-50'>
             <div className={divClass}>
+                {/* Bottone salvataggio */}
                 <SaveButton onClick={onSaveStocks} salvato={salvato} />
-                <div  className='w-10 h-10 bg-red-400 rounded-full'/>
-                <p className={valueText}>{nome} <br /> <span className="text-xs text-gray-700">{simbolo}</span></p>
+                {/* Icona stock */}
+                <StockIcon width="w-10" height="h-10" immagine={immagine} simbolo={simbolo} />
+                {/* Nome e simbolo stock */}
+                <p className={valueText}>
+                    {nomeStock ? nomeStock : "ND"}
+                    <br />
+                    <span className="text-xs text-gray-700">
+                        {simbolo ? simbolo : "ND"}
+                    </span>
+                </p>
             </div>
-
+            {/* Prezzo e percentuale stock */}
             <div className={divClass}>
-                <p className={valueText}>$ {valore} <br /> <span className="text-xs text-gray-700 float-right">{percentuale}%</span></p>
+                <p className={valueText}>
+                    $ {valoreStock ? valoreStock : "ND"}
+                    <br />
+                    <span className="text-xs text-gray-700 float-right">
+                        {percentuale ? percentuale : "ND"}%
+                    </span>
+                </p>
             </div>
         </div>
     )
