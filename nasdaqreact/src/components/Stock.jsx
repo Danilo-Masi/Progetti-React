@@ -23,7 +23,7 @@ export default function Stock({ nome, simbolo, valore, percentuale, immagine, on
 
     //Testo trocato
     const nomeStock = nome.length > 10 ? nome.substring(0, 10).toLowerCase() : nome;
-    const valoreStock = valore.length > 10 ? valore.substring(0, 10) : valore;
+    const valoreStock = Number(valore).toFixed(8);
 
     //Stile
     const divClass = "flex items-center gap-2";

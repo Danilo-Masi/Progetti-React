@@ -8,7 +8,6 @@ const options = {
 
 //Funzione che fa una chiamata all'API per richiedere le stock che coincidono con la stringa inserita dall'utente
 export const getStockSearch = ({ searchString }) => {
-
     return fetch(`https://api.coinranking.com/v2/search-suggestions?query=${searchString}`, options)
         .then((response) =>
             response.json()
@@ -17,14 +16,28 @@ export const getStockSearch = ({ searchString }) => {
             return result.data.coins;
         })
         .catch((error) => {
+            console.error("Errore durante la richiesta API:", error.message);
             return []
         });
 }
 
-//Funzione che fa una chiamata all'API per richiedere le mutazioni del valore nel tempo di una determinata stock
-export const getStockDataHistory = ({ uuid }) => {
+export const getStockDetail = ({ uuid }) => {
+    return fetch(`https://api.coinranking.com/v2/coin/${uuid}`, options)
+        .then((response) =>
+            response.json()
+        )
+        .then((result) => {
+            return result.data.coin;
+        })
+        .catch((error) => {
+            console.error("Errore durante la richiesta API:", error.message);
+            return [];
+        });
+}
 
-    return fetch(`https://api.coinranking.com/v2/coin/${uuid}/history`, options)
+//Funzione che fa una chiamata all'API per richiedere le mutazioni del valore nel tempo di una determinata stock
+export const getStockDataHistory = ({ uuid, period }) => {
+    return fetch(`https://api.coinranking.com/v2/coin/${uuid}/history?timePeriod=${period ? period : "1y"}`, options)
         .then((response) =>
             response.json()
         )

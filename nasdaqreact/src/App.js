@@ -45,9 +45,8 @@ export default function App() {
   }
 
   //Funzione per rimuovere una stock dalla lista "stockDetailList"
-  // ************** FUNZIONE DA IMPLEMENTARE ****************** //
   const handleUnsaveStock = (uuid) => {
-    alert(`Elimina stock salvata con id: ${uuid}`);
+    setStocksDetailList(prevList => prevList.filter(stock => stock.uuid !== uuid));
   }
 
   return (

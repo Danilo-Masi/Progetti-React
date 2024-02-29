@@ -25,7 +25,7 @@ NasdaqReact is an application designed to facilitate user monitoring of their pr
    npm install flowbite
 ```
 
-- React-Charts (https://www.npmjs.com/package/react-charts)
+- Recharts(https://recharts.org/en-US)
 ```bash 
-   npm i react-charts --save
+   npm install recharts
 ```
