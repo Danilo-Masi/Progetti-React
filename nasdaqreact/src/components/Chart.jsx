@@ -1,7 +1,7 @@
 import React from 'react';
 import { XAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 
-export default function Chart({ datiGrafico }) {
+export default function Chart({ datiGrafico, periodSelected }) {
 
     //Funzione per trasformare l'array preso dalla chiamata all'API e tradurlo in dati
     //funzionali per il chart
@@ -17,16 +17,6 @@ export default function Chart({ datiGrafico }) {
         };
     });
 
-    const CustomizedAxisTick = ({ x, y, stroke, payload }) => {
-        return (
-            <g transform={`translate(${x}, ${y})`}>
-                <text x={0} y={0} dy={15} textAnchor="end" fill="#666" transform="rotate(-45)">
-                    {payload.value}
-                </text>
-            </g>
-        );
-    }
-
     return (
         <ResponsiveContainer width="100%" height={200} >
             <AreaChart
@@ -34,7 +24,7 @@ export default function Chart({ datiGrafico }) {
                 height={300}
                 data={trasformedData}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="data" tick={<CustomizedAxisTick />} />
+                <XAxis dataKey="data" />
                 <Tooltip />
                 <Area type="monotone" dataKey="valore" stroke="#82ca9d" fill='#82ca9d' />
             </AreaChart>

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Chart from './Chart';
 import StockIcon from './StockIcon';
 import SkeletonStockDetail from './SkeletonStockDetail';
+import GroupButton from './GroupButton';
 //Services
 import { getStockDataHistory, getStockDetail } from '../services/StockAPI';
 
@@ -17,16 +18,25 @@ function UnsavedButton({ onUnsaveStok }) {
     );
 }
 
+function Container({ larghezza, altezza, itemPosition, children }) {
+    return (
+        <div className={`${larghezza ? larghezza : 'w-1/4'} ${itemPosition} ${altezza ? altezza : 'h-auto'} justify-center flex flex-col`}>
+            {children}
+        </div>
+    );
+}
+
 export default function StockDetail({ uuid, onUnsaveStok }) {
 
     const [datiGrafico, setDatiGrafico] = useState([]);
     const [datiValuta, setDatiValuta] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [periodSelected, setPeriodSelected] = useState("");
 
     //Caricamento dei dati della valuta e del grafico
     useEffect(() => {
         setLoading(true);
-        Promise.all([getStockDetail({ uuid }), getStockDataHistory({ uuid })])
+        Promise.all([getStockDetail({ uuid }), getStockDataHistory({ uuid, periodSelected })])
             .then(([detailData, historyData]) => {
                 setDatiValuta(detailData);
                 setDatiGrafico(historyData);
@@ -36,7 +46,7 @@ export default function StockDetail({ uuid, onUnsaveStok }) {
                 console.error("Errore durante il caricamento dei dati", error);
                 setLoading(false);
             });
-    }, [uuid]);
+    }, [uuid, periodSelected]);
 
     //Dati della valuta
     const nome = datiValuta.name;
@@ -50,13 +60,34 @@ export default function StockDetail({ uuid, onUnsaveStok }) {
             {loading === true ? (
                 <SkeletonStockDetail />
             ) : (
-                <div className='w-full md:w-[calc(33.33%-0.85rem)] h-min flex flex-col flex-wrap gap-y-5 items-center justify-between rounded-md p-5 text-center bg-gray-200'>
+                <div className='w-full md:w-[calc(33.33%-0.85rem)] h-auto flex flex-wrap gap-y-5 items-start justify-start rounded-md p-5 bg-gray-200'>
 
+                    <Container>
+                        <StockIcon width="w-14" height="h-14" immagine={immagine} simbolo={simbolo} />
+                    </Container>
+                    <Container larghezza="w-2/4" itemPosition="items-start">
+                        <h1 className='text-2xl'>{simbolo}</h1>
+                        <p className='text-xl text-gray-500'>{nome}</p>
+                    </Container>
+                    <Container itemPosition="items-center" altezza="h-14">
+                        <UnsavedButton onUnsaveStok={onUnsaveStok} />
+                    </Container>
+
+                    <Container larghezza="w-full" itemPosition="items-start">
+                        <h1 className='text-2xl'>{prezzo} <span className='text-xl text-gray-500'>USD</span></h1>
+                        <p className='text-md'>{percentuale} %</p>
+                    </Container>
+
+                    <GroupButton onPeriodSet={(period) => setPeriodSelected(period)} />
+
+                    <Chart datiGrafico={datiGrafico} period={periodSelected} />
+
+                    {/* 
                     <div className=' w-full justify-between items-center flex flex-wrap gap-y-5'>
                         <div className='w-2/3 flex items-center gap-3'>
-                            {/* Icona stock */}
+                            
                             <StockIcon width="w-12" height="h-12" immagine={immagine} simbolo={simbolo} />
-                            {/* Nome e simbolo stock */}
+                           
                             <h1 className='text-xl'>
                                 {nome ? nome : "ND"}
                                 <br />
@@ -65,17 +96,19 @@ export default function StockDetail({ uuid, onUnsaveStok }) {
                                 </span>
                             </h1>
                         </div>
-                        {/* Bottone un-salvataggio */}
+                        
                         <UnsavedButton onUnsaveStok={onUnsaveStok} />
-                        {/* Prezzo e percentuale stock */}
+                        
                         <div className='w-full flex flex-col items-start gap-3'>
                             <h1 className='text-4xl'>{prezzo ? prezzo + ' $' : "ND"}</h1>
                             <p className='text-sm text-gray-500'>{percentuale ? percentuale : "ND"} %</p>
                         </div>
                     </div>
-                    {/* Grafico prezzo stock */}
+                    
                     <Chart datiGrafico={datiGrafico} />
+                    */}
                 </div>
+
             )}
         </>
     )

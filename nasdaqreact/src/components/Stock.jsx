@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 //Componenti
 import StockIcon from './StockIcon';
+import { getStockDetail } from '../services/StockAPI';
 
 //Funzione che restituisce il bottone per salvare una stock nella lista
 function SaveButton({ onClick, salvato }) {
@@ -19,11 +20,27 @@ function SaveButton({ onClick, salvato }) {
     );
 }
 
-export default function Stock({ nome, simbolo, valore, percentuale, immagine, onSaveStocks, salvato }) {
+export default function Stock({ uuid, onSaveStocks, salvato }) {
 
-    //Testo trocato
-    const nomeStock = nome.length > 10 ? nome.substring(0, 10).toLowerCase() : nome;
-    const valoreStock = Number(valore).toFixed(8);
+    const [datiValuta, setDatiValuta] = useState({});
+
+    /********** DA IMPLEMENTARE ************/
+    useEffect(() => {
+        Promise.all([getStockDetail({ uuid })])
+            .then(([detailStock]) => {
+                setDatiValuta(detailStock);
+            })
+            .catch(error => {
+                console.error("Errore durante il caricamento dei dati", error);
+            });
+    }, [uuid]);
+
+    //Dati della valuta
+    const nome = datiValuta.name;
+    const simbolo = datiValuta.symbol;
+    const immagine = datiValuta.iconUrl;
+    const prezzo = Number(datiValuta.price).toFixed(8);
+    const percentuale = datiValuta.change;
 
     //Stile
     const divClass = "flex items-center gap-2";
@@ -38,7 +55,7 @@ export default function Stock({ nome, simbolo, valore, percentuale, immagine, on
                 <StockIcon width="w-10" height="h-10" immagine={immagine} simbolo={simbolo} />
                 {/* Nome e simbolo stock */}
                 <p className={valueText}>
-                    {nomeStock ? nomeStock : "ND"}
+                    {nome ? nome : "ND"}
                     <br />
                     <span className="text-xs text-gray-700">
                         {simbolo ? simbolo : "ND"}
@@ -48,7 +65,7 @@ export default function Stock({ nome, simbolo, valore, percentuale, immagine, on
             {/* Prezzo e percentuale stock */}
             <div className={divClass}>
                 <p className={valueText}>
-                    $ {valoreStock ? valoreStock : "ND"}
+                    $ {prezzo ? prezzo : "ND"}
                     <br />
                     <span className="text-xs text-gray-700 float-right">
                         {percentuale ? percentuale : "ND"}%

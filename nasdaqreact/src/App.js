@@ -64,12 +64,7 @@ export default function App() {
             {stockList.map((s) => (
               <Stock
                 onSaveStocks={() => handleSaveStock(s.uuid)}
-                key={s.uuid}
-                nome={s.symbol}
-                simbolo={s.symbol}
-                valore={s.price}
-                immagine={s.iconUrl}
-                percentuale={s.percentuale} />
+                key={s.uuid} />
             ))}
           </StockList >
         )}

@@ -36,8 +36,11 @@ export const getStockDetail = ({ uuid }) => {
 }
 
 //Funzione che fa una chiamata all'API per richiedere le mutazioni del valore nel tempo di una determinata stock
-export const getStockDataHistory = ({ uuid, period }) => {
-    return fetch(`https://api.coinranking.com/v2/coin/${uuid}/history?timePeriod=${period ? period : "1y"}`, options)
+export const getStockDataHistory = ({ uuid, periodSelected }) => {
+
+    const periodo = periodSelected ? periodSelected : "1y";
+
+    return fetch(`https://api.coinranking.com/v2/coin/${uuid}/history?timePeriod=${periodo}`, options)
         .then((response) =>
             response.json()
         )
