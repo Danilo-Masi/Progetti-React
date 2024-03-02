@@ -1,8 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 export default function GroupButton({ onPeriodSet }) {
-
-    const [tempo, setTempo] = useState("1y");
 
     //Hook useMemo() che permette all'app di verificare se una funzioen sia cambiata
     //se lo è si aggiorna, se non lo è rimane invariata, cosi da non permettere 
@@ -11,7 +9,6 @@ export default function GroupButton({ onPeriodSet }) {
 
     const handlePeriodChange = (time) => {
         alert("Period impstato: " + time);
-        setTempo(time);
         memoizedOnPeriodSet(time);
     }
 
@@ -22,31 +19,31 @@ export default function GroupButton({ onPeriodSet }) {
             <button
                 onClick={() => handlePeriodChange("1h")}
                 type="button"
-                className={`${buttonClass}  ${'rounded-s-lg'} ${tempo === "1h" ? 'z-10 ring-2 ring-blue-500 text-white bg-blue-500' : ''}`}>
+                className={`${buttonClass}  ${'rounded-s-lg'}`}>
                 1H
             </button>
             <button
                 onClick={() => handlePeriodChange("24h")}
                 type="button"
-                className={`${buttonClass} ${tempo === "24h" ? 'z-10 ring-2 ring-blue-500 text-white bg-blue-500' : ''} `}>
+                className={`${buttonClass}`}>
                 24H
             </button>
             <button
                 onClick={() => handlePeriodChange("7d")}
                 type="button"
-                className={`${buttonClass} ${tempo === "7d" ? 'z-10 ring-2 ring-blue-500 text-white bg-blue-500' : ''}`}>
+                className={`${buttonClass} `}>
                 7D
             </button>
             <button
                 onClick={() => handlePeriodChange("30d")}
                 type="button"
-                className={`${buttonClass} ${tempo === "30d" ? 'z-10 ring-2 ring-blue-500 text-white bg-blue-500' : ''}`}>
+                className={`${buttonClass} `}>
                 1M
             </button>
             <button
                 onClick={() => handlePeriodChange("1y")}
                 type="button"
-                className={`${buttonClass} ${'rounded-e-lg'} ${tempo === "1y" ? 'z-10 ring-2 ring-blue-500 text-white bg-blue-500' : ''}`}>
+                className={`${buttonClass} ${'rounded-e-lg'} `}>
                 1Y
             </button>
         </div>

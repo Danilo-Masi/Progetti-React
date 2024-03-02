@@ -64,7 +64,8 @@ export default function App() {
             {stockList.map((s) => (
               <Stock
                 onSaveStocks={() => handleSaveStock(s.uuid)}
-                key={s.uuid} />
+                key={s.uuid}
+                datiValuta={s} />
             ))}
           </StockList >
         )}

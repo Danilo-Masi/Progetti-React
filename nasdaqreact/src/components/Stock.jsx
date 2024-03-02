@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 //Componenti
 import StockIcon from './StockIcon';
-import { getStockDetail } from '../services/StockAPI';
+import { Container } from './Layout';
 
 //Funzione che restituisce il bottone per salvare una stock nella lista
 function SaveButton({ onClick, salvato }) {
@@ -20,58 +20,30 @@ function SaveButton({ onClick, salvato }) {
     );
 }
 
-export default function Stock({ uuid, onSaveStocks, salvato }) {
-
-    const [datiValuta, setDatiValuta] = useState({});
-
-    /********** DA IMPLEMENTARE ************/
-    useEffect(() => {
-        Promise.all([getStockDetail({ uuid })])
-            .then(([detailStock]) => {
-                setDatiValuta(detailStock);
-            })
-            .catch(error => {
-                console.error("Errore durante il caricamento dei dati", error);
-            });
-    }, [uuid]);
+export default function Stock({ datiValuta, onSaveStocks, salvato }) {
 
     //Dati della valuta
     const nome = datiValuta.name;
     const simbolo = datiValuta.symbol;
     const immagine = datiValuta.iconUrl;
-    const prezzo = Number(datiValuta.price).toFixed(8);
-    const percentuale = datiValuta.change;
-
-    //Stile
-    const divClass = "flex items-center gap-2";
-    const valueText = "text-md";
+    const prezzo = Number(datiValuta.price).toFixed(2);
 
     return (
-        <div className='w-full flex item-center justify-between p-3 text-md text-gray-900 border border-gray-300 rounded-lg bg-gray-50'>
-            <div className={divClass}>
-                {/* Bottone salvataggio */}
+        <div className='w-full flex gap-2 p-3 border border-gray-300 rounded-lg bg-gray-50'>
+            <Container larghezza="w-min">
                 <SaveButton onClick={onSaveStocks} salvato={salvato} />
-                {/* Icona stock */}
+            </Container>
+            <Container larghezza="w-1/6">
                 <StockIcon width="w-10" height="h-10" immagine={immagine} simbolo={simbolo} />
-                {/* Nome e simbolo stock */}
-                <p className={valueText}>
-                    {nome ? nome : "ND"}
-                    <br />
-                    <span className="text-xs text-gray-700">
-                        {simbolo ? simbolo : "ND"}
-                    </span>
-                </p>
-            </div>
-            {/* Prezzo e percentuale stock */}
-            <div className={divClass}>
-                <p className={valueText}>
-                    $ {prezzo ? prezzo : "ND"}
-                    <br />
-                    <span className="text-xs text-gray-700 float-right">
-                        {percentuale ? percentuale : "ND"}%
-                    </span>
-                </p>
-            </div>
+            </Container>
+            <Container larghezza="w-2/6">
+                <p>{simbolo}</p>
+                <p className='text-sm text-gray-500'>{nome}</p>
+            </Container>
+            <Container larghezza="w-2/6" itemPosition="items-end">
+                <p>{prezzo}<span className='text-sm text-gray-500'> $</span></p>
+            </Container>
         </div>
+
     )
 }

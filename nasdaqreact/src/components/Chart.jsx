@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { XAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 
 export default function Chart({ datiGrafico, periodSelected }) {
 
-    //Funzione per trasformare l'array preso dalla chiamata all'API e tradurlo in dati
-    //funzionali per il chart
+    const [dataFormattata, setDataFormattata] = useState("");
+
+    //Funzione per formattare i dati da inserire nel grafico
     const trasformedData = datiGrafico.map((entry) => {
-        //Formatta la data (ora:minuti)
-        const timestamp = new Date(entry.timestamp * 1000);
-        const ora = timestamp.getHours().toString().padStart(2, '0');
-        const minuti = timestamp.getMinutes().toString().padStart(2, '0');
-        const formattedTime = `${ora}:${minuti}`;
+        if (periodSelected === "1h" || periodSelected === "24h") {
+            const timestamp = new Date(entry.timestamp * 1000);
+            const ora = timestamp.getHours().toString().padStart(2, '0');
+            const minuti = timestamp.getMinutes().toString().padStart(2, '0');
+            const formattedTime = `${ora}:${minuti}`;
+            setDataFormattata(formattedTime);
+        }
         return {
-            data: formattedTime,
+            data: dataFormattata,
             valore: parseFloat(entry.price),
         };
     });

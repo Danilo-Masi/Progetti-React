@@ -4,6 +4,7 @@ import Chart from './Chart';
 import StockIcon from './StockIcon';
 import SkeletonStockDetail from './SkeletonStockDetail';
 import GroupButton from './GroupButton';
+import { Container } from './Layout';
 //Services
 import { getStockDataHistory, getStockDetail } from '../services/StockAPI';
 
@@ -18,11 +19,21 @@ function UnsavedButton({ onUnsaveStok }) {
     );
 }
 
-function Container({ larghezza, altezza, itemPosition, children }) {
+//Funzione che restituisce la freccia "up" nel caso la percentuale sia positiva
+function ArrowUp() {
     return (
-        <div className={`${larghezza ? larghezza : 'w-1/4'} ${itemPosition} ${altezza ? altezza : 'h-auto'} justify-center flex flex-col`}>
-            {children}
-        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+        </svg>
+    );
+}
+
+//Funzione che restituisce la freccia "down" nel caso la percentuale sia negativa
+function ArroDown() {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+        </svg>
     );
 }
 
@@ -49,11 +60,11 @@ export default function StockDetail({ uuid, onUnsaveStok }) {
     }, [uuid, periodSelected]);
 
     //Dati della valuta
-    const nome = datiValuta.name;
-    const simbolo = datiValuta.symbol;
-    const immagine = datiValuta.iconUrl;
-    const prezzo = Number(datiValuta.price).toFixed(4);
-    const percentuale = datiValuta.change;
+    const nome = datiValuta.name ? datiValuta.name : "ND";
+    const simbolo = datiValuta.symbol ? datiValuta.symbol : "ND";
+    const immagine = datiValuta.iconUrl ? datiValuta.iconUrl : "";
+    const prezzo = datiValuta.price ? Number(datiValuta.price).toFixed(8) : 0;
+    const percentuale = datiValuta.change ? datiValuta.change : "0";
 
     return (
         <>
@@ -61,54 +72,37 @@ export default function StockDetail({ uuid, onUnsaveStok }) {
                 <SkeletonStockDetail />
             ) : (
                 <div className='w-full md:w-[calc(33.33%-0.85rem)] h-auto flex flex-wrap gap-y-5 items-start justify-start rounded-md p-5 bg-gray-200'>
-
+                    {/* Icona */}
                     <Container>
                         <StockIcon width="w-14" height="h-14" immagine={immagine} simbolo={simbolo} />
                     </Container>
+                    {/* Simbolo e nome */}
                     <Container larghezza="w-2/4" itemPosition="items-start">
                         <h1 className='text-2xl'>{simbolo}</h1>
                         <p className='text-xl text-gray-500'>{nome}</p>
                     </Container>
+                    {/* Bottone per un-salvare */}
                     <Container itemPosition="items-center" altezza="h-14">
                         <UnsavedButton onUnsaveStok={onUnsaveStok} />
                     </Container>
-
+                    {/* Prezzo e percentuale */}
                     <Container larghezza="w-full" itemPosition="items-start">
                         <h1 className='text-2xl'>{prezzo} <span className='text-xl text-gray-500'>USD</span></h1>
-                        <p className='text-md'>{percentuale} %</p>
+                        <p className='text-md flex gap-1'>
+                            <span>
+                                {percentuale > 0 ? <ArrowUp /> : <ArroDown />}
+                            </span>
+                            {percentuale}
+                            <span>
+                                %
+                            </span>
+                        </p>
                     </Container>
-
+                    {/* Gruppo bottoni per selezionare il periodo */}
                     <GroupButton onPeriodSet={(period) => setPeriodSelected(period)} />
-
+                    {/* Grafico prezzi */}
                     <Chart datiGrafico={datiGrafico} period={periodSelected} />
-
-                    {/* 
-                    <div className=' w-full justify-between items-center flex flex-wrap gap-y-5'>
-                        <div className='w-2/3 flex items-center gap-3'>
-                            
-                            <StockIcon width="w-12" height="h-12" immagine={immagine} simbolo={simbolo} />
-                           
-                            <h1 className='text-xl'>
-                                {nome ? nome : "ND"}
-                                <br />
-                                <span className='text-sm text-gray-500 float-left'>
-                                    ({simbolo ? simbolo : "ND"})
-                                </span>
-                            </h1>
-                        </div>
-                        
-                        <UnsavedButton onUnsaveStok={onUnsaveStok} />
-                        
-                        <div className='w-full flex flex-col items-start gap-3'>
-                            <h1 className='text-4xl'>{prezzo ? prezzo + ' $' : "ND"}</h1>
-                            <p className='text-sm text-gray-500'>{percentuale ? percentuale : "ND"} %</p>
-                        </div>
-                    </div>
-                    
-                    <Chart datiGrafico={datiGrafico} />
-                    */}
                 </div>
-
             )}
         </>
     )

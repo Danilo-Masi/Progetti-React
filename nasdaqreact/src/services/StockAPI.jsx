@@ -6,7 +6,8 @@ const options = {
     },
 };
 
-//Funzione che fa una chiamata all'API per richiedere le stock che coincidono con la stringa inserita dall'utente
+//Chiamata all'API per la ricerca delle stock che coincidono con "searchString" 
+//valore inserito dall'utente
 export const getStockSearch = ({ searchString }) => {
     return fetch(`https://api.coinranking.com/v2/search-suggestions?query=${searchString}`, options)
         .then((response) =>
@@ -21,6 +22,8 @@ export const getStockSearch = ({ searchString }) => {
         });
 }
 
+//Chiamata all'API per ricevere i valori dettagliati di una determinata 
+//"stock" definita tramite il suo "uuid"
 export const getStockDetail = ({ uuid }) => {
     return fetch(`https://api.coinranking.com/v2/coin/${uuid}`, options)
         .then((response) =>
@@ -35,11 +38,11 @@ export const getStockDetail = ({ uuid }) => {
         });
 }
 
-//Funzione che fa una chiamata all'API per richiedere le mutazioni del valore nel tempo di una determinata stock
+//Chiamata all'API per ricevere i valori del prezzo nel tempo di una determinata
+//"stock" definita tramite il suo "uuid", "periodSelcted" definisce il periodo
+//di tempo da cui iniziare a raccogliere i dati
 export const getStockDataHistory = ({ uuid, periodSelected }) => {
-
     const periodo = periodSelected ? periodSelected : "1y";
-
     return fetch(`https://api.coinranking.com/v2/coin/${uuid}/history?timePeriod=${periodo}`, options)
         .then((response) =>
             response.json()

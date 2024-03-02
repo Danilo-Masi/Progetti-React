@@ -17,9 +17,20 @@ export function Col({ children, width, mdWidth, color }) {
 }
 
 export function ColLayout({ children, height, color, justify, gap, overflow, flexDirection, itemPosition }) {
+    const itemPx = itemPosition ? itemPosition : "items-center";
     return (
         <div
-            className={`w-full flex flex-wrap flex-col ${itemPosition ? itemPosition : 'items-center'} md:${flexDirection} ${height} ${justify} ${gap} ${overflow} ${color}`}>
+            className={`w-full flex flex-wrap flex-col md:${flexDirection} ${itemPx} ${height} ${justify} ${gap} ${overflow} ${color}`}>
+            {children}
+        </div>
+    );
+}
+
+export function Container({ larghezza, altezza, itemPosition, children }) {
+    const width = larghezza ? larghezza : 'w-1/4';
+    const height = altezza ? altezza : 'h-auto';
+    return (
+        <div className={`justify-center flex flex-col ${width} ${height} ${itemPosition}`}>
             {children}
         </div>
     );
