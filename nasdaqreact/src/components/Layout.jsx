@@ -10,29 +10,24 @@ export default function Layout({ children }) {
 
 export function Col({ children, width, mdWidth, color }) {
     return (
-        <div className={`h-svh flex flex-col items-centers justify-start p-5 ${width} ${mdWidth} ${color}`}>
+        <div className={`h-svh flex flex-col items-center justify-start p-5 ${width} ${mdWidth} ${color}`}>
             {children}
         </div>
     );
 }
 
-export function ColLayout({ children, height, color, justify, gap, overflow, flexDirection, itemPosition }) {
-    const itemPx = itemPosition ? itemPosition : "items-center";
+export function ColLayout({ children, ...props }) {
     return (
-        <div
-            className={`w-full flex flex-wrap flex-col md:${flexDirection} ${itemPx} ${height} ${justify} ${gap} ${overflow} ${color}`}>
+        <div className={`w-full flex flex-wrap flex-col md:flex-row ${props.itemPosition ?? "items-center"} ${props.height ?? "h-auto"} ${props.justify ?? ""} ${props.gap ?? ""} ${props.overflow ?? ""} ${props.color ?? ""}`}>
             {children}
         </div>
     );
 }
 
 export function Container({ larghezza, altezza, itemPosition, children }) {
-    const width = larghezza ? larghezza : 'w-1/4';
-    const height = altezza ? altezza : 'h-auto';
     return (
-        <div className={`justify-center flex flex-col ${width} ${height} ${itemPosition}`}>
+        <div className={`justify-center flex flex-col ${larghezza ?? 'w-1/4'} ${altezza ?? 'h-auto'} ${itemPosition ?? ''}`}>
             {children}
         </div>
     );
 }
-

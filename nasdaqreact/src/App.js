@@ -80,12 +80,7 @@ export default function App() {
               <StockDetail
                 onUnsaveStok={() => handleUnsaveStock(sd.uuid)}
                 key={sd.uuid}
-                uuid={sd.uuid}
-                nome={sd.symbol}
-                simbolo={sd.symbol}
-                valore={sd.price}
-                immagine={sd.iconUrl}
-                percentuale={sd.percentuale} />
+                uuid={sd.uuid} />
             ))}
           </StockDetailList>
         )}

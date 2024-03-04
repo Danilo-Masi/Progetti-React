@@ -6,19 +6,22 @@ export default function SearchBar({ onSearchStocks }) {
 
     const [digit, setDigit] = useState("");
 
-    //Funzione (callBack) per prendere il valore inserito dall'utente
+    //Funzione per prendere il valore inserito dall'utente e invocare la ricerca
     const handleSearch = (e) => {
         e.preventDefault();
-        if (digit !== '') {
-            onSearchStocks(digit)
+        if (digit.trim() !== '') {
+            onSearchStocks(digit.trim());
         }
-        setDigit("");
-    }
+        setDigit('');
+    };
+
+    //Funzione per gestire il cambiamento dell'input
+    const handleChange = (event) => {
+        setDigit(event.target.value);
+    };
 
     return (
-        <ColLayout
-            height="h-1/6"
-            justify="justify-center">
+        <ColLayout height="h-1/6" justify="justify-center">
             <form className="w-full" onSubmit={handleSearch}>
                 <label
                     htmlFor="default-search"
@@ -38,15 +41,14 @@ export default function SearchBar({ onSearchStocks }) {
                         placeholder="Search Stocks..."
                         required
                         value={digit}
-                        onChange={(event) => setDigit(event.target.value)} />
+                        onChange={handleChange} />
                     <button
                         type="submit"
-                        className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md px-4 py-2"
-                        onClick={handleSearch}>
+                        className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md px-4 py-2">
                         Search
                     </button>
                 </div>
             </form>
         </ColLayout>
-    )
+    );
 }

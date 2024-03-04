@@ -19,24 +19,6 @@ function UnsavedButton({ onUnsaveStok }) {
     );
 }
 
-//Funzione che restituisce la freccia "up" nel caso la percentuale sia positiva
-function ArrowUp() {
-    return (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-        </svg>
-    );
-}
-
-//Funzione che restituisce la freccia "down" nel caso la percentuale sia negativa
-function ArroDown() {
-    return (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-        </svg>
-    );
-}
-
 export default function StockDetail({ uuid, onUnsaveStok }) {
 
     const [datiGrafico, setDatiGrafico] = useState([]);
@@ -60,11 +42,12 @@ export default function StockDetail({ uuid, onUnsaveStok }) {
     }, [uuid, periodSelected]);
 
     //Dati della valuta
-    const nome = datiValuta.name ? datiValuta.name : "ND";
-    const simbolo = datiValuta.symbol ? datiValuta.symbol : "ND";
-    const immagine = datiValuta.iconUrl ? datiValuta.iconUrl : "";
-    const prezzo = datiValuta.price ? Number(datiValuta.price).toFixed(8) : 0;
-    const percentuale = datiValuta.change ? datiValuta.change : "0";
+    const nome = datiValuta.name || "ND";
+    const simbolo = datiValuta.symbol || "ND";
+    const immagine = datiValuta.iconUrl || "";
+    const prezzo = Number(datiValuta.price).toFixed(8) || 0;
+    const percentuale = datiValuta.change || "0";
+    const isPositive = percentuale > 0;
 
     return (
         <>
@@ -82,7 +65,7 @@ export default function StockDetail({ uuid, onUnsaveStok }) {
                         <p className='text-xl text-gray-500'>{nome}</p>
                     </Container>
                     {/* Bottone per un-salvare */}
-                    <Container itemPosition="items-center" altezza="h-14">
+                    <Container itemPosition="items-end" altezza="h-14">
                         <UnsavedButton onUnsaveStok={onUnsaveStok} />
                     </Container>
                     {/* Prezzo e percentuale */}
@@ -90,18 +73,24 @@ export default function StockDetail({ uuid, onUnsaveStok }) {
                         <h1 className='text-2xl'>{prezzo} <span className='text-xl text-gray-500'>USD</span></h1>
                         <p className='text-md flex gap-1'>
                             <span>
-                                {percentuale > 0 ? <ArrowUp /> : <ArroDown />}
+                                {isPositive ? (
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                    </svg>
+                                ) : (
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                    </svg>
+                                )}
                             </span>
                             {percentuale}
-                            <span>
-                                %
-                            </span>
+                            <span>%</span>
                         </p>
                     </Container>
                     {/* Gruppo bottoni per selezionare il periodo */}
-                    <GroupButton onPeriodSet={(period) => setPeriodSelected(period)} />
+                    <GroupButton onPeriodSet={(period) => setPeriodSelected(period)} periodSelected={periodSelected} />
                     {/* Grafico prezzi */}
-                    <Chart datiGrafico={datiGrafico} period={periodSelected} />
+                    <Chart datiGrafico={datiGrafico} periodSelected={periodSelected} />
                 </div>
             )}
         </>
