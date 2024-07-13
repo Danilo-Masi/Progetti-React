@@ -1,22 +1,9 @@
 
 # Todo app
 
-Todo App è un'applicazione che consente di organizzare facilmente le proprie attività. Questa app ha uno scopo didattico ed è stata sviluppata basandosi sulle conoscenze acquisite dal libro "React: Guida pratica allo sviluppo front-end" dell'autore Alessandro Miliucci. Il libro è stato una fonte di aiuto, quindi eventuali errori o inesattezze sono di mia responsabilità.
-
 Todo App is an application that allows you to easily organize your tasks. This app serves an educational purpose and has been developed based on the knowledge acquired from the book "React: Practical Guide to Front-end Development" by author Alessandro Miliucci. The book has been a helpful resource, so any errors or inaccuracies are my responsibility.
 
-
-## Funziolità (IT)
-
-- Creare un nuovo elenco
-- Modificare il nome di un elenco
-- Eliminare un elenco
-- Aggiungere una nuova attività
-- Modificare il testo di un'attività
-- Contrassegnare un'attività come completata
-- Eliminare un'attività
-
-## Features (EN)
+## Features
 
 - Add a new list
 - Edit the name of a list
@@ -27,7 +14,7 @@ Todo App is an application that allows you to easily organize your tasks. This a
 - Delete a task
 
 
-## Fonti utili
+## Useful sources
 
 - Bootstrap
 ```bash
@@ -51,7 +38,7 @@ Todo App is an application that allows you to easily organize your tasks. This a
   npm install --save prop-types
 ```
 
-- Server per testare l'applicazione
+- Server to test the app
 ```bash
   npx example-todo-api 
 ```
