@@ -11,4 +11,4 @@ React Projects is a repository that gathers a series of applications developed w
 
 ## Feedback
 
-Any feedback is appreciated; you can contact me at my email address danilomasi999@gmail.com
+Any feedback is appreciated. You can contact me at my email address danilomasi999@gmail.com
